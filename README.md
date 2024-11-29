@@ -41,7 +41,6 @@ Este é um sistema simples de gerenciamento de usuários desenvolvido com **Node
 
 ```bash
 git clone https://github.com/pedro-h-p-gomes/pantore-test.git
-cd seu-repositorio
 ```
 
 ### Passo 2: Instale as dependências
