@@ -1,4 +1,3 @@
-// src/domain/entities/User.js
 const { DataTypes } = require('sequelize');
 
 class Usuario {
