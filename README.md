@@ -95,6 +95,7 @@ Access the full documentation of the endpoints at:
 - `npm start` - Starts the server in production mode.
 - `npm run dev` - Starts the server with nodemon for development.
 - `npm run lint` - Lints the code with ESLint.
+- `npm test` - Jest's Tests.
 
 ---
 
