@@ -1,169 +1,168 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { Usuario } = require('../../infrastructure/database');
+const { User } = require('../../infrastructure/database');
 const { Op } = require('sequelize');
 
-class UsuarioServico {
-    // Método para criar um novo usuário
-    static async criarUsuario({ nome, email, senha, funcao }) {
-        // Verificar se o e-mail já existe
-        const usuarioExistente = await Usuario.findOne({ where: { email } });
-        if (usuarioExistente) {
-            throw new Error('E-mail já está em uso.');
+class UserService {
+    // Method to create a new user
+    static async createUser({ name, email, password, role }) {
+        // Check if the email already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            throw new Error('Email is already in use.');
         }
 
-        // Gerar hash da senha
-        const hashSenha = await bcrypt.hash(senha, 10);
+        // Generate password hash
+        const passwordHash = await bcrypt.hash(password, 10);
 
-        // Criar e salvar o usuário no banco de dados
-        const novoUsuario = await Usuario.create({
-            nome,
+        // Create and save the user in the database
+        const newUser = await User.create({
+            name,
             email,
-            senha: hashSenha,
-            funcao,
+            password: passwordHash,
+            role,
         });
 
-        return novoUsuario;
+        return newUser;
     }
 
-    // Método para autenticar o usuário
-    static async autenticarUsuario({ email, senha }) {
-        // Procurar o usuário pelo e-mail
-        const usuario = await Usuario.findOne({ where: { email } });
-        if (!usuario) {
-            throw new Error('Usuário ou senha inválidos.');
+    // Method to authenticate the user
+    static async authenticateUser({ email, password }) {
+        // Find the user by email
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            throw new Error('Invalid email or password.');
         }
 
-        // Verificar a senha
-        const senhaValida = await bcrypt.compare(senha, usuario.senha);
-        if (!senhaValida) {
-            throw new Error('Usuário ou senha inválidos.');
+        // Verify the password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new Error('Invalid email or password.');
         }
 
-        // Gerar o token JWT
+        // Generate JWT token
         const token = jwt.sign(
-            { id: usuario.id, funcao: usuario.funcao },
-            process.env.JWT_SECRET, // Chave secreta do token
-            { expiresIn: '1h' } // Expiração do token
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET, // Secret token key
+            { expiresIn: '1h' } // Token expiration time
         );
 
-        return { token, usuario };
+        return { token, user };
     }
 
-    // Método para atualizar os dados de um usuário
-    static async atualizarUsuario(id, { nome, email, senha, funcao }) {
-        // Procurar o usuário pelo ID
-        const usuario = await Usuario.findByPk(id);
-        if (!usuario) {
-            throw new Error('Usuário não encontrado.');
+    // Method to update user data
+    static async updateUser(id, { name, email, password, role }) {
+        // Find the user by ID
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new Error('User not found.');
         }
 
-        // Se a senha for fornecida, gerar o hash da nova senha
-        if (senha) {
-            const hashSenha = await bcrypt.hash(senha, 10);
-            senha = hashSenha;
+        // If password is provided, generate hash
+        if (password) {
+            const passwordHash = await bcrypt.hash(password, 10);
+            password = passwordHash;
         }
 
-        // Atualizar os dados do usuário
-        usuario.nome = nome || usuario.nome;
-        usuario.email = email || usuario.email;
-        usuario.senha = senha || usuario.senha;
-        usuario.funcao = funcao || usuario.funcao;
+        // Update user data
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.password = password || user.password;
+        user.role = role || user.role;
 
-        // Salvar as alterações no banco de dados
-        await usuario.save();
+        // Save changes in the database
+        await user.save();
 
-        return usuario;
+        return user;
     }
 
-    // Método para listar todos os usuários
-    static async listarTodosUsuarios() {
+    // Method to list all users
+    static async listAllUsers() {
         try {
-            const usuarios = await Usuario.findAll();
-            return usuarios;
+            const users = await User.findAll();
+            return users;
         } catch (error) {
-            throw new Error('Erro ao listar usuários: ' + error.message);
+            throw new Error('Error listing users: ' + error.message);
         }
     }
 
-    // Método para buscar um usuário pelo ID
-    static async buscarUsuarioPorId(id) {
-        const usuario = await Usuario.findByPk(id);
-        if (!usuario) {
-            throw new Error('Usuário não encontrado.');
+    // Method to find a user by ID
+    static async findUserById(id) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new Error('User not found.');
         }
-        return usuario;
+        return user;
     }
 
-    // Método para busca dinâmica de usuários (nome, email, funcao)
-    static async buscarComFiltros({ nome, email, funcao }) {
-        const filtros = {};
+    // Method for dynamic user search (name, email, role)
+    static async searchWithFilters({ name, email, role }) {
+        const filters = {};
 
-        // Se o nome foi passado, aplica o LIKE no nome
-        if (nome) {
-            filtros.nome = {
-                [Op.iLike]: `${nome}%`, // 'iLike' é para busca insensível a maiúsculas/minúsculas no PostgreSQL
+        // If name is provided, apply LIKE to the name
+        if (name) {
+            filters.name = {
+                [Op.iLike]: `${name}%`, // 'iLike' for case-insensitive search in PostgreSQL
             };
         }
 
-        // Se o email foi passado, aplica o LIKE no email
+        // If email is provided, apply LIKE to the email
         if (email) {
-            filtros.email = {
+            filters.email = {
                 [Op.iLike]: `${email}%`,
             };
         }
 
-        // Se a função foi passada, filtra pela função
-        if (funcao) {
-            filtros.funcao = funcao;
+        // If role is provided, filter by role
+        if (role) {
+            filters.role = role;
         }
 
-        // Busca com os filtros aplicados
-        const usuarios = await Usuario.findAll({
-            where: filtros,
+        // Search with applied filters
+        const users = await User.findAll({
+            where: filters,
         });
 
-        return usuarios;
+        return users;
     }
 
-    // Método para deletar um usuário
-    static async deletarUsuario(id) {
-        // Procurar o usuário pelo ID
-        const usuario = await Usuario.findByPk(id);
-        if (!usuario) {
-            throw new Error('Usuário não encontrado.');
+    // Method to delete a user
+    static async deleteUser(id) {
+        // Find the user by ID
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new Error('User not found.');
         }
 
-        // Excluir o usuário do banco de dados
-        await usuario.destroy();
+        // Delete the user from the database
+        await user.destroy();
 
-        return { mensagem: 'Usuário excluído com sucesso.' };   
+        return { message: 'User successfully deleted.' };
     }
 
-    // Método para atualização parcial de um usuário
-    static async atualizarParcialUsuario(id, dadosAtualizados) {
-        // Procurar o usuário pelo ID
-        const usuario = await Usuario.findByPk(id);
-        if (!usuario) {
-            throw new Error('Usuário não encontrado.');
+    // Method for partial user updates
+    static async updatePartialUser(id, updatedData) {
+        // Find the user by ID
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw new Error('User not found.');
         }
 
-        // Atualizar os campos fornecidos no objeto dadosAtualizados
-        for (const [key, value] of Object.entries(dadosAtualizados)) {
-            if (key === 'senha') {
-                // Se for a senha, gerar o hash antes de atualizar
-                usuario[key] = await bcrypt.hash(value, 10);
+        // Update fields provided in the updatedData object
+        for (const [key, value] of Object.entries(updatedData)) {
+            if (key === 'password') {
+                // If it's a password, hash it before updating
+                user[key] = await bcrypt.hash(value, 10);
             } else {
-                usuario[key] = value;
+                user[key] = value;
             }
         }
 
-        // Salvar as alterações no banco
-        await usuario.save();
+        // Save changes in the database
+        await user.save();
 
-        return usuario;
+        return user;
     }
-
 }
 
-module.exports = UsuarioServico;
+module.exports = UserService;

@@ -1,7 +1,7 @@
 {
   "name": "pantore-pedro-gomes",
   "version": "1.0.0",
-  "description": "Projeto de gestao de usuarios com Node.js, Sequelize, Winston, e Swagger",
+  "description": "User management project using Node.js, Sequelize, Winston, and Swagger",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

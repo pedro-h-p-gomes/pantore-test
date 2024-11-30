@@ -1,29 +1,29 @@
 const { DataTypes } = require('sequelize');
 
-class Usuario {
-    constructor(id, nome, email, senha, funcao) {
+class User {
+    constructor(id, name, email, password, role) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.email = email;
-        this.senha = senha;
-        this.funcao = funcao;
+        this.password = password;
+        this.role = role;
     }
-    
-    // Método: Verificar se o usuário é admin
-    ehAdmin() {
-        return this.funcao === 'admin';
+
+    // Method: Check if the user is an admin
+    isAdmin() {
+        return this.role === 'admin';
     }
 }
 
-// Modelo Sequelize para persistência
-const UsuarioModelo = (sequelize) => {
-    return sequelize.define('Usuario', {
+// Sequelize Model for persistence
+const UserModel = (sequelize) => {
+    return sequelize.define('User', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
         },
-        nome: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -32,18 +32,18 @@ const UsuarioModelo = (sequelize) => {
             allowNull: false,
             unique: true,
         },
-        senha: {
+        password: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        funcao: {
-            type: DataTypes.ENUM('admin', 'cliente'),
+        role: {
+            type: DataTypes.ENUM('admin', 'customer'),
             allowNull: false,
         },
     }, {
-        tableName: 'usuarios',
+        tableName: 'users',
         timestamps: true,
     });
 };
 
-module.exports = { Usuario, UsuarioModelo };
+module.exports = { User, UserModel };

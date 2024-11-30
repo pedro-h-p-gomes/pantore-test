@@ -1,71 +1,71 @@
 
-# Sistema de Gerenciamento de Usuários
+# User Management System
 
-Este é um sistema simples de gerenciamento de usuários desenvolvido com **Node.js**, **Express**, **Sequelize**, **PostgreSQL**, e **Swagger** para documentação de API. Ele inclui funcionalidades de autenticação JWT, CRUD de usuários, e logs com Winston.
-
----
-
-## 🚀 Funcionalidades
-
-- **Criar usuários:** Endpoint para cadastro de novos usuários.
-- **Autenticação:** Login de usuários com geração de token JWT.
-- **Atualização:** Atualização parcial ou completa dos dados de um usuário.
-- **Listagem:** Busca dinâmica e listagem de usuários com filtros.
-- **Exclusão:** Remoção de usuários por ID.
-- **Logs:** Registro de operações usando Winston.
-- **Documentação:** Swagger para documentação automática dos endpoints.
+This is a simple user management system developed with **Node.js**, **Express**, **Sequelize**, **PostgreSQL**, and **Swagger** for API documentation. It includes JWT authentication, user CRUD operations, and logging with Winston.
 
 ---
 
-## 🛠️ Tecnologias
+## 🚀 Features
+
+- **Create users:** Endpoint to register new users.
+- **Authentication:** User login with JWT token generation.
+- **Update:** Partial or full update of user data.
+- **Listing:** Dynamic search and listing of users with filters.
+- **Deletion:** Removal of users by ID.
+- **Logs:** Recording operations using Winston.
+- **Documentation:** Swagger for automatic documentation of the endpoints.
+
+---
+
+## 🛠️ Technologies
 
 - **Node.js** (back-end)
-- **Express** (framework para APIs)
-- **Sequelize** (ORM para integração com PostgreSQL)
-- **PostgreSQL** (banco de dados)
-- **JWT** (autenticação)
-- **Winston** (logs)
-- **Swagger** (documentação de API)
+- **Express** (API framework)
+- **Sequelize** (ORM for PostgreSQL integration)
+- **PostgreSQL** (database)
+- **JWT** (authentication)
+- **Winston** (logging)
+- **Swagger** (API documentation)
 
 ---
 
-## 📦 Instalação e Configuração
+## 📦 Installation and Setup
 
-### Pré-requisitos
+### Prerequisites
 
-1. **Node.js** instalado (versão LTS recomendada).
-2. **PostgreSQL** configurado e rodando.
-3. Arquivo `.env` configurado com as variáveis de ambiente necessárias.
+1. **Node.js** installed (LTS version recommended).
+2. **PostgreSQL** configured and running.
+3. `.env` file configured with the necessary environment variables.
 
-### Passo 1: Clone o repositório
+### Step 1: Clone the repository
 
 ```bash
 git clone https://github.com/pedro-h-p-gomes/pantore-test.git
 ```
 
-### Passo 2: Instale as dependências
+### Step 2: Install dependencies
 
 ```bash
 npm install
 ```
 
-### Passo 3: Configure o arquivo `.env`
+### Step 3: Configure the `.env` file
 
-Crie um arquivo `.env` na raiz do projeto e configure as variáveis:
+Create a `.env` file in the root of the project and configure the variables:
 
 ```
-DB_NAME=nome_do_banco
-DB_USER=usuario
-DB_PASSWORD=senha
+DB_NAME=database_name
+DB_USER=user
+DB_PASSWORD=password
 DB_HOST=localhost
 DB_DIALECT=postgres
-JWT_SECRET=sua_chave_secreta
+JWT_SECRET=your_secret_key
 PORT=3000
 ```
 
-### Passo 4: Inicialize o banco de dados
+### Step 4: Initialize the database
 
-Certifique-se de que o banco de dados está rodando e execute a sincronização com Sequelize:
+Make sure the database is running and perform the Sequelize synchronization:
 
 ```bash
 npm run start
@@ -73,50 +73,50 @@ npm run start
 
 ---
 
-## 🏃 Uso
+## 🏃 Usage
 
-### Iniciar o servidor
+### Start the server
 
 ```bash
 npm start
 ```
 
-O servidor estará disponível em: `http://localhost:3000`
+The server will be available at: `http://localhost:3000`
 
 ### Endpoints
 
-Acesse a documentação completa dos endpoints em:  
+Access the full documentation of the endpoints at:  
 `http://localhost:3000/api-docs`
 
 ---
 
-## 📜 Scripts Disponíveis
+## 📜 Available Scripts
 
-- `npm start` - Inicia o servidor em produção.
-- `npm run dev` - Inicia o servidor com nodemon para desenvolvimento.
-- `npm run lint` - Verifica o código com ESLint.
-
----
-
-## 📄 Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
+- `npm start` - Starts the server in production mode.
+- `npm run dev` - Starts the server with nodemon for development.
+- `npm run lint` - Lints the code with ESLint.
 
 ---
 
-## 🤝 Contribuições
+## 📄 License
 
-Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
-
-1. Faça um fork do projeto.
-2. Crie um branch para sua feature: `git checkout -b minha-feature`.
-3. Commit suas mudanças: `git commit -m 'Adicionei minha feature'`.
-4. Faça um push para o branch: `git push origin minha-feature`.
-5. Abra um Pull Request.
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 📧 Contato
+## 🤝 Contributions
 
-Criado por **[Seu Nome]**  
-Entre em contato: [pedrogomespsa@gmail.com](mailto:pedrogomespsa@gmail.com)
+Contributions are welcome! Please follow the steps below to contribute:
+
+1. Fork the repository.
+2. Create a branch for your feature: `git checkout -b my-feature`.
+3. Commit your changes: `git commit -m 'Added my feature'`.
+4. Push to the branch: `git push origin my-feature`.
+5. Open a Pull Request.
+
+---
+
+## 📧 Contact
+
+Created by **Pedro Gomes**  
+Contact: [pedrogomespsa@gmail.com](mailto:pedrogomespsa@gmail.com)

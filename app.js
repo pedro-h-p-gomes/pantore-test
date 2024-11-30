@@ -1,36 +1,34 @@
-// app.js
 const express = require('express');
-const { conectarBanco } = require('./src/infrastructure/database');
+const { connectDatabase } = require('./src/infrastructure/database');
 const userRoutes = require('./src/interfaces/routes/userRoutes');
 require('dotenv').config();
 const { swaggerUi, swaggerSpec } = require('./src/shared/swagger'); 
 const morgan = require('morgan');
 const logger = require('./src/shared/logger');
 
-
 const app = express();
 
-// Middleware para interpretar JSON
+// Middleware to parse JSON
 app.use(express.json());
 
-// Middleware para registrar requisições no Winston
+// Middleware to log requests using Winston
 app.use(morgan('combined', {
     stream: {
-        write: (message) => logger.info(message.trim()) // Registrar no Winston
+        write: (message) => logger.info(message.trim()) // Log with Winston
     }
 }));
 
-// Rota para documentação Swagger
+// Route for Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Rotas da aplicacao
+// Application routes
 app.use('/api', userRoutes);
 
 (async () => {
-    await conectarBanco();
+    await connectDatabase();
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-        console.log(`Servidor rodando na porta ${PORT}`);
+        console.log(`Server is running on port ${PORT}`);
     });
 })();

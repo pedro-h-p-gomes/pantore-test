@@ -1,9 +1,9 @@
-require('dotenv').config(); // Carrega variáveis do .env
+require('dotenv').config(); // Load environment variables
 const { Sequelize } = require('sequelize');
-const { UsuarioModelo } = require('../../domain/entities/User');
+const { UserModel } = require('../../domain/entities/User');
 const logger = require('../../shared/logger');
 
-// Configurações para o banco PostgreSQL
+// PostgreSQL database configuration
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -14,19 +14,19 @@ const sequelize = new Sequelize(
     }
 );
 
-// Inicializar o modelo Usuario
-const Usuario = UsuarioModelo(sequelize);
+// Initialize the User model
+const User = UserModel(sequelize);
 
-// Função para conectar ao banco
-const conectarBanco = async () => {
+// Function to connect to the database
+const connectDatabase = async () => {
     try {
         await sequelize.authenticate();
-        logger.info('Conexão com o banco de dados estabelecida.');
+        logger.info('Database connection established.');
         await sequelize.sync({ alter: true });
-        logger.info('Modelos sincronizados com o banco.');
+        logger.info('Models synchronized with the database.');
     } catch (error) {
-        logger.error('Erro ao conectar no banco:', error);
+        logger.error('Error connecting to the database:', error);
     }
 };
 
-module.exports = { sequelize, Usuario, conectarBanco };
+module.exports = { sequelize, User, connectDatabase };

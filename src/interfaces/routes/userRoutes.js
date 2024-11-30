@@ -1,15 +1,15 @@
 const express = require('express');
-const UsuarioController = require('../controllers/UserController');
+const UserController = require('../controllers/UserController');
 
 const router = express.Router();
 
-// Rota para criar um novo usuário
+// Route to create a new user
 /**
  * @swagger
- * /usuarios:
+ * /users:
  *   post:
- *     summary: Criação de um novo usuário
- *     description: Cria um novo usuário com os dados fornecidos
+ *     summary: Create a new user
+ *     description: Creates a new user with the provided data
  *     requestBody:
  *       required: true
  *       content:
@@ -17,49 +17,48 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               name:
  *                 type: string
  *               email:
  *                 type: string
- *               senha:
+ *               password:
  *                 type: string
- *               funcao:
+ *               role:
  *                 type: string
- *                 enum: [admin, cliente]
+ *                 enum: [admin, client]
  *     responses:
  *       201:
- *         description: Usuário criado com sucesso
+ *         description: User successfully created
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 mensagem:
+ *                 message:
  *                   type: string
- *                 usuario:
+ *                 user:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: string
- *                     nome:
+ *                     name:
  *                       type: string
  *                     email:
  *                       type: string
- *                     funcao:
+ *                     role:
  *                       type: string
  *       400:
- *         description: Erro na criação do usuário
+ *         description: Error creating the user
  */
-router.post('/usuarios', UsuarioController.cadastrar);
+router.post('/users', UserController.register);
 
-// Rota para login de usuário
-// src/interfaces/routes/userRoutes.js
+// Route for user login
 /**
  * @swagger
- * /usuarios/login:
+ * /users/login:
  *   post:
- *     summary: Login de um usuário
- *     description: Autentica um usuário e retorna um token JWT para acesso
+ *     summary: User login
+ *     description: Authenticates a user and returns a JWT token for access
  *     requestBody:
  *       required: true
  *       content:
@@ -69,48 +68,48 @@ router.post('/usuarios', UsuarioController.cadastrar);
  *             properties:
  *               email:
  *                 type: string
- *               senha:
+ *               password:
  *                 type: string
  *     responses:
  *       200:
- *         description: Login realizado com sucesso
+ *         description: Login successful
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 mensagem:
+ *                 message:
  *                   type: string
  *                 token:
  *                   type: string
- *                 usuario:
+ *                 user:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: string
- *                     nome:
+ *                     name:
  *                       type: string
  *                     email:
  *                       type: string
- *                     funcao:
+ *                     role:
  *                       type: string
  *       401:
- *         description: Usuário ou senha inválidos
+ *         description: Invalid user or password
  */
-router.post('/usuarios/login', UsuarioController.login);
+router.post('/users/login', UserController.login);
 
-// Rota para atualizar um usuário existente
+// Route to update an existing user
 /**
  * @swagger
- * /usuarios/{id}:
+ * /users/{id}:
  *   put:
- *     summary: Atualizar dados de um usuário
- *     description: Atualiza as informações de um usuário pelo seu ID
+ *     summary: Update user data
+ *     description: Updates a user's information by their ID
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID do usuário
+ *         description: User ID
  *         schema:
  *           type: string
  *     requestBody:
@@ -120,18 +119,18 @@ router.post('/usuarios/login', UsuarioController.login);
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               name:
  *                 type: string
  *               email:
  *                 type: string
- *               senha:
+ *               password:
  *                 type: string
- *               funcao:
+ *               role:
  *                 type: string
- *                 enum: [admin, cliente]
+ *                 enum: [admin, client]
  *     responses:
  *       200:
- *         description: Usuário atualizado com sucesso
+ *         description: User successfully updated
  *         content:
  *           application/json:
  *             schema:
@@ -139,30 +138,29 @@ router.post('/usuarios/login', UsuarioController.login);
  *               properties:
  *                 id:
  *                   type: string
- *                 nome:
+ *                 name:
  *                   type: string
  *                 email:
  *                   type: string
- *                 funcao:
+ *                 role:
  *                   type: string
  *       400:
- *         description: Erro na atualização do usuário
+ *         description: Error updating the user
  *       404:
- *         description: Usuário não encontrado
+ *         description: User not found
  */
-router.put('/usuarios/:id', UsuarioController.atualizar);
+router.put('/users/:id', UserController.update);
 
-// Rota para listar todos os usuários
-// src/interfaces/routes/userRoutes.js
+// Route to list all users
 /**
  * @swagger
- * /usuarios:
+ * /users:
  *   get:
- *     summary: Listar todos os usuários
- *     description: Retorna uma lista de todos os usuários cadastrados
+ *     summary: List all users
+ *     description: Returns a list of all registered users
  *     responses:
  *       200:
- *         description: Lista de usuários
+ *         description: List of users
  *         content:
  *           application/json:
  *             schema:
@@ -172,45 +170,44 @@ router.put('/usuarios/:id', UsuarioController.atualizar);
  *                 properties:
  *                   id:
  *                     type: string
- *                   nome:
+ *                   name:
  *                     type: string
  *                   email:
  *                     type: string
- *                   funcao:
+ *                   role:
  *                     type: string
  */
-router.get('/usuarios', UsuarioController.listarTodos);
+router.get('/users', UserController.listAll);
 
-// Rota para busca dinâmica de usuários
-// src/interfaces/routes/userRoutes.js
+// Route for dynamic user search
 /**
  * @swagger
- * /usuarios/busca:
+ * /users/search:
  *   get:
- *     summary: Busca de usuários com filtros
- *     description: Retorna uma lista de usuários com base em filtros de nome, email ou função
+ *     summary: Search users with filters
+ *     description: Returns a list of users based on filters for name, email, or role
  *     parameters:
- *       - name: nome
+ *       - name: name
  *         in: query
- *         description: Filtro de nome do usuário
+ *         description: User name filter
  *         required: false
  *         schema:
  *           type: string
  *       - name: email
  *         in: query
- *         description: Filtro de email do usuário
+ *         description: User email filter
  *         required: false
  *         schema:
  *           type: string
- *       - name: funcao
+ *       - name: role
  *         in: query
- *         description: Filtro de função do usuário
+ *         description: User role filter
  *         required: false
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Lista de usuários encontrados
+ *         description: List of matching users
  *         content:
  *           application/json:
  *             schema:
@@ -220,34 +217,34 @@ router.get('/usuarios', UsuarioController.listarTodos);
  *                 properties:
  *                   id:
  *                     type: string
- *                   nome:
+ *                   name:
  *                     type: string
  *                   email:
  *                     type: string
- *                   funcao:
+ *                   role:
  *                     type: string
  *       400:
- *         description: Erro na busca de usuários
+ *         description: Error searching for users
  */
-router.get('/usuarios/busca', UsuarioController.buscarComFiltros);
+router.get('/users/search', UserController.searchWithFilters);
 
-// Rota para buscar um usuário específico pelo ID
+// Route to fetch a specific user by ID
 /**
  * @swagger
- * /usuarios/{id}:
+ * /users/{id}:
  *   get:
- *     summary: Buscar usuário por ID
- *     description: Retorna os dados de um usuário específico pelo seu ID
+ *     summary: Fetch user by ID
+ *     description: Returns the data of a specific user by their ID
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID do usuário
+ *         description: User ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Usuário encontrado
+ *         description: User found
  *         content:
  *           application/json:
  *             schema:
@@ -255,75 +252,74 @@ router.get('/usuarios/busca', UsuarioController.buscarComFiltros);
  *               properties:
  *                 id:
  *                   type: string
- *                 nome:
+ *                 name:
  *                   type: string
  *                 email:
  *                   type: string
- *                 funcao:
+ *                 role:
  *                   type: string
  *       404:
- *         description: Usuário não encontrado
+ *         description: User not found
  */
-router.get('/usuarios/:id', UsuarioController.buscarPorId);
+router.get('/users/:id', UserController.findById);
 
-// Rota de delecao de usuarios
+// Route to delete a user
 /**
  * @swagger
- * /usuarios/{id}:
+ * /users/{id}:
  *   delete:
- *     summary: Excluir um usuário
- *     description: Exclui um usuário do sistema pelo seu ID
+ *     summary: Delete a user
+ *     description: Deletes a user from the system by their ID
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID do usuário
+ *         description: User ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Usuário excluído com sucesso
+ *         description: User successfully deleted
  *       404:
- *         description: Usuário não encontrado
+ *         description: User not found
  */
-router.delete('/usuarios/:id', UsuarioController.deletar);
+router.delete('/users/:id', UserController.delete);
 
-//Rota de atualizacao parcial de usuarios (patch)
+// Route for partial user update
 /**
  * @swagger
- * /usuarios/{id}:
+ * /users/{id}:
  *   patch:
- *     summary: Atualizar parcialmente um usuário
- *     description: Atualiza os dados de um usuário, apenas os campos fornecidos.
+ *     summary: Partially update a user
+ *     description: Updates only the provided fields of a user.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID do usuário
+ *         description: User ID
  *         schema:
  *           type: string
- *       - name: body
- *         in: body
- *         required: true
- *         description: Dados a serem atualizados
- *         schema:
- *           type: object
- *           properties:
- *             nome:
- *               type: string
- *             email:
- *               type: string
- *             senha:
- *               type: string
- *             funcao:
- *               type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Usuário atualizado com sucesso
+ *         description: User successfully updated
  *       404:
- *         description: Usuário não encontrado
+ *         description: User not found
  */
-router.patch('/usuarios/:id', UsuarioController.atualizarParcial);
-
+router.patch('/users/:id', UserController.partialUpdate);
 
 module.exports = router;
