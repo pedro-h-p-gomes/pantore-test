@@ -25,7 +25,7 @@ const router = express.Router();
  *                 type: string
  *               role:
  *                 type: string
- *                 enum: [admin, client]
+ *                 enum: [admin, customer]
  *     responses:
  *       201:
  *         description: User successfully created

@@ -8,7 +8,11 @@
     "dev": "nodemon app.js",
     "lint": "eslint .",
     "swagger:generate": "node src/shared/swagger.js",
-    "logs:clean": "rm -rf logs/*.log"
+    "logs:clean": "rm -rf logs/*.log",
+    "test": "jest"
+  },
+  "jest": {
+  "testEnvironment": "node"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -27,6 +31,8 @@
   },
   "devDependencies": {
     "eslint": "^8.57.1",
-    "nodemon": "^3.1.7"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.7",
+    "supertest": "^7.0.0"
   }
 }

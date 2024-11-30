@@ -65,3 +65,7 @@ build/
 # Temp files
 *.tmp
 *.temp
+
+# Node files
+
+package-lock.json
